@@ -9,6 +9,12 @@ Versions follow [semver](https://semver.org): MAJOR.MINOR.PATCH. Every release i
 
 Open copies of the app check `version.json` when brought to the front and offer an **Update** button when a newer version is live.
 
+## 1.7.0 — 2026-11-07
+- Picks on screen are looked up before the background stock, so nothing sits on "Finding…" behind hidden items.
+- A shimmer "Finding photo & price…" replaces the fabric swatch while a pick is being looked up.
+- A pick whose photo won't load anywhere gets one retry with the stronger model on a different store; if that fails it's swapped for a ready pick. Picks only shows real products with real photos.
+- Picks tab count shows only what's on screen.
+
 ## 1.6.0 — 2026-11-07
 - Instant picks: about 30 picks are kept ready in the background, already looked up with photos and prices. "Show 8 new picks" reveals them immediately and restocking starts on its own.
 - Listing lookups run 3 at a time and use the faster Haiku model by default (Settings → Listing lookups to switch to Sonnet). Backs off automatically if the API rate-limits.

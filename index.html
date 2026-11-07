@@ -93,6 +93,10 @@ main{padding-block:22px 64px}
 .sw.prod{background:#fff}
 .sw.prod img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff;display:block}
 .sw .finding{position:absolute;inset:auto 10px 10px auto;background:var(--paper);color:var(--muted);font-size:11px;padding:4px 8px;border-radius:2px;display:flex;gap:6px;align-items:center}
+.sw.skel{background:linear-gradient(100deg,var(--paper) 30%,var(--gold-soft) 50%,var(--paper) 70%) 0 0/300% 100%;animation:shim 1.6s linear infinite}
+@keyframes shim{to{background-position:-150% 0}}
+@media (prefers-reduced-motion:reduce){.sw.skel{animation:none}}
+.sw .skl{position:absolute;left:0;right:0;bottom:12px;text-align:center;font-size:12px;color:var(--muted);letter-spacing:.04em}
 .sw .tag{position:absolute;left:10px;top:10px;background:var(--paper);color:var(--ink);font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:4px 8px;border-radius:2px}
 .sw .newdot{position:absolute;right:10px;top:10px;background:var(--gold);color:#1b1411;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:4px 7px;border-radius:2px}
 .body{padding:14px 14px 12px;display:flex;flex-direction:column;gap:6px;flex:1}
@@ -225,7 +229,7 @@ main{padding-block:22px 64px}
 
 <script>
 (() => {
-const APP_VERSION = "1.6.0";
+const APP_VERSION = "1.7.0";
 const APP_BUILD = "2026-11-07";
 const CATS = ["Outerwear","Knitwear","Tops","Skirts","Dresses","Pants","Shoes","Bags","Accessories"];
 const TEXTURES = ["herringbone","plaid","tapestry","croc","knit","boucle","fur","suede","leather","satin","solid"];
@@ -295,7 +299,7 @@ function sizesLine(){
 }
 function tabs(){
   const vis = S.items.filter(i=>i.status!=="no");
-  const t = [["picks","Picks",vis.filter(i=>i.status!=="fav"&&i.source!=="photo").length],["saved","Saved",S.items.filter(i=>i.status==="fav").length],["lists","Lists",S.lists.length],["style","Sage’s style",S.photos.length]];
+  const t = [["picks","Picks",vis.filter(i=>i.status==="new"&&i.source!=="photo").length],["saved","Saved",S.items.filter(i=>i.status==="fav").length],["lists","Lists",S.lists.length],["style","Sage’s style",S.photos.length]];
   $("#tabs").innerHTML = t.map(([k,l,n])=>`<button class="tab" role="tab" data-act="tab" data-tab="${k}" aria-selected="${S.tab===k}">${l}<span class="n">${n||""}</span></button>`).join("");
 }
 function swatchInner(it){ const c=(it.colors||[]).map(hex).filter(Boolean); const tex=TEXTURES.includes(it.texture)?it.texture:"solid";
@@ -309,7 +313,10 @@ function swatch(it){
 }
 function art(it){
   if (!it.photoAsset && S.local) {
-    const c = imgChain(it);
+    const c = IMGFAIL.has(it.id) ? [] : imgChain(it);
+    const working = !it.lookedUp || BG.inflight.has(it.id) || BG.pending.includes(it.id) || (it.url && !it.ogTried);
+    if (!c.length && working) { if (it.url && !it.ogTried) queuePreview(it.id); return `<div class="sw skel"><span class="tag">${esc(it.category||"Piece")}</span><span class="skl">Finding photo &amp; price…</span></div>`; }
+    if (!c.length && it.lookedUp && it.source!=="photo") setTimeout(()=>noPhoto(it.id),0);
     if (c.length) return `<div class="sw prod">${swatchInner(it)}<img src="${esc(c[0])}" data-c="${esc(JSON.stringify(c))}" data-i="0" data-item="${esc(it.id)}" alt="${esc(it.title)}" loading="lazy" referrerpolicy="no-referrer"><span class="tag">${esc(it.category||"Piece")}</span></div>`;
     if (it.url && !it.ogTried) queuePreview(it.id);
   }
@@ -534,7 +541,8 @@ const readyScore = i => (i.url&&i.image?2:i.url?1:0) + (S.local? (i.lookedUp?0:-
 
 async function getPicks(auto){
   if (!S.sample || S.busy) return;
-  const stock = queued().sort((a,b)=>readyScore(b)-readyScore(a) || a.createdAt-b.createdAt);
+  let stock = queued().filter(i=>!IMGFAIL.has(i.id)).sort((a,b)=>readyScore(b)-readyScore(a) || a.createdAt-b.createdAt);
+  if (S.local) { const ready = stock.filter(i=>i.url && i.image); if (ready.length) stock = ready; }
   if (stock.length) {
     const take = stock.slice(0,8), now = Date.now();
     for (let k=0;k<take.length;k++) await S.db.doc("items/"+take[k].id).update({status:"new",createdAt:now+k,batch:now});
@@ -597,15 +605,15 @@ Reply with only a JSON object: {"summary": 1-2 sentences describing her style, "
   finally { idle(); }
 }
 
-async function findListing(it,signal){
+async function findListing(it,signal,o={}){
   const q = `Find this exact clothing piece for sale online right now in the US:
 Brand: ${it.brand}
 Piece: ${it.title}
 Search phrase: ${it.query||""}
 ${it.tagText?`Tag: ${it.tagText}`:""}
 Search for it, then fetch the best-matching product page (the brand's own site or a major retailer such as Macy's, Nordstrom, Bloomingdale's, Revolve, Free People, Anthropologie). From the fetched page copy the product's photo URLs exactly as they appear in the page content (direct https image links from the retailer's image CDN, e.g. og:image or the main gallery). Never construct or guess an image URL. Also take the current price and the exact listed product name. If the exact piece is sold out or not found, use the closest in-stock match from the same brand and say so in "match".
-Reply with only a JSON object: {"url": product page URL or null, "image": best product image URL copied from the page or null, "images": up to 3 more product image URLs copied from the page, "price": current price like "$128" or null, "retailer": store name, "title": listed product name, "match": "exact" or "close" or "none"}`;
-  const r = await S.sample.json(q,{signal,search:true,searchUses:3,fetch:2,model:LS.get("sage.lookupModel")||"claude-haiku-5-5"});
+${o.avoid?`The page ${o.avoid} did not give a usable product photo. Use a DIFFERENT store's page for this piece (or the closest in-stock match) whose product photo link appears in the page content.\n`:""}Reply with only a JSON object: {"url": product page URL or null, "image": best product image URL copied from the page or null, "images": up to 3 more product image URLs copied from the page, "price": current price like "$128" or null, "retailer": store name, "title": listed product name, "match": "exact" or "close" or "none"}`;
+  const r = await S.sample.json(q,{signal,search:true,searchUses:3,fetch:2,model:o.thorough?(LS.get("sage.model")||"claude-sonnet-5-5"):(LS.get("sage.lookupModel")||"claude-haiku-5-5")});
   const patch = {lookedUp:Date.now()};
   if (r && /^https:\/\//.test(r.url||"")) {
     patch.url=String(r.url).slice(0,600);
@@ -617,7 +625,11 @@ Reply with only a JSON object: {"url": product page URL or null, "image": best p
     if (r.match) patch.match=String(r.match).slice(0,10);
     if (r.title && it.source!=="photo") patch.title=String(r.title).slice(0,120);
   }
+  if (o.avoid && patch.url===o.avoid) delete patch.url;
   await S.db.doc("items/"+it.id).update(patch);
+  IMGFAIL.delete(it.id); PREVIEW.seen.delete(it.id);
+  if (S.owed && it.status==="queued" && patch.url && patch.image) { S.owed--; try { await S.db.doc("items/"+it.id).update({status:"new",createdAt:Date.now(),batch:Date.now()}); } catch {} }
+  if (!patch.url && it.source!=="photo" && (it.status==="new"||it.status==="queued")) { if (it.photoRetry || o.thorough) retire(it.id); else noPhoto(it.id); }
   return !!patch.url;
 }
 const BG = {ctl:null,refilling:false,active:0,pending:[],stopped:false,inflight:new Set(),
@@ -628,9 +640,11 @@ function bgText(){
   const work = BG.inflight.size || BG.pending.length ? `Looking up ${BG.inflight.size+BG.pending.length} listing${BG.inflight.size+BG.pending.length===1?"":"s"}` : BG.refilling ? "Restocking picks" : "";
   return (ready?`${ready} more ready`:"") + (work?`${ready?" · ":""}${work}… <a href="#" data-act="stopbg">Pause</a>`:"");
 }
-function lookupPool(ids){
+const POOLOPT = new Map();
+function lookupPool(ids,opt){
   if (!S.local || !S.sample) return Promise.resolve();
   BG.stopped = false;
+  if (opt) ids.forEach(id=>POOLOPT.set(id,opt));
   const fresh = ids.filter(id=>!BG.inflight.has(id) && !BG.pending.includes(id));
   BG.pending.push(...fresh);
   bgNote();
@@ -639,14 +653,15 @@ function lookupPool(ids){
     const tick = () => {
       if (!BG.pending.length && !BG.inflight.size) { bgNote(); return resolve(); }
       while (!BG.stopped && BG.inflight.size < conc && BG.pending.length) {
-        const id = BG.pending.shift(); const it = S.items.find(x=>x.id===id);
+        const pri = BG.pending.findIndex(x=>{ const t=S.items.find(i=>i.id===x); return t && t.status!=="queued"; });
+        const id = BG.pending.splice(pri>=0?pri:0,1)[0]; const it = S.items.find(x=>x.id===id);
         if (!it) continue;
         BG.inflight.add(id); S.finding = id; render();
-        findListing(it,BG.signal()).catch(async e=>{
+        findListing(it,BG.signal(),POOLOPT.get(id)||{}).catch(async e=>{
           if (e?.code==="rate_limited") { BG.pending.unshift(id); LS.set("sage.conc","2"); await new Promise(r=>setTimeout(r,20000)); }
           else if (e?.code==="bad_key") { BG.stopped=true; BG.pending=[]; toast(errCopy(e)); }
           else if (e?.code!=="cancelled") { try{ await S.db.doc("items/"+id).update({lookedUp:Date.now()}); }catch{} }
-        }).finally(()=>{ BG.inflight.delete(id); if(S.finding===id) S.finding=null; render(); tick(); });
+        }).finally(()=>{ POOLOPT.delete(id); BG.inflight.delete(id); if(S.finding===id) S.finding=null; render(); tick(); });
       }
       if (BG.stopped && !BG.inflight.size) { BG.pending=[]; bgNote(); resolve(); }
     };
@@ -676,8 +691,32 @@ document.addEventListener("error", ev => {
   if (i < c.length) { im.dataset.i = i; im.src = c[i]; return; }
   const id = im.dataset.item; im.remove();
   const it = S.items.find(x=>x.id===id);
-  if (it && it.url && !it.ogTried) queuePreview(id);
+  if (it && it.url && !it.ogTried && !PREVIEW.seen.has(id)) { queuePreview(id); return; }
+  IMGFAIL.add(id); noPhoto(id);
 }, true);
+const IMGFAIL = new Set();
+/* No working photo: one thorough retry on a different store, then swap the pick out */
+async function noPhoto(id){
+  const it = S.items.find(x=>x.id===id);
+  if (!it || it.source==="photo" || !S.local || it.status==="nolisting" || BG.inflight.has(id) || BG.pending.includes(id)) return;
+  if (!it.photoRetry) {
+    IMGFAIL.delete(id); PREVIEW.seen.delete(id);
+    try { await S.db.doc("items/"+id).update({photoRetry:Date.now(),ogTried:null}); } catch {}
+    lookupPool([id],{thorough:true,avoid:it.url});
+  } else retire(id);
+}
+const RETIRED = new Set();
+async function retire(id){
+  const it = S.items.find(x=>x.id===id); if (!it || it.source==="photo" || it.status==="fav" || RETIRED.has(id)) return;
+  RETIRED.add(id);
+  const wasShown = it.status==="new";
+  try { await S.db.doc("items/"+id).update({status:"nolisting"}); } catch { return; }
+  if (wasShown) {
+    const rep = queued().filter(i=>i.url && i.image && !IMGFAIL.has(i.id)).sort((a,b)=>a.createdAt-b.createdAt)[0];
+    if (rep) { try { await S.db.doc("items/"+rep.id).update({status:"new",createdAt:it.createdAt,batch:it.batch||Date.now()}); } catch {} }
+    else S.owed = (S.owed||0)+1;
+  }
+}
 const PREVIEW = {queue:[],seen:new Set(),running:0};
 function queuePreview(id){
   if (!S.local || PREVIEW.seen.has(id)) return;
