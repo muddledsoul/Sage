@@ -1,0 +1,848 @@
+{
+ "lists/hand-picked": {
+  "name": "Sage’s Hand Picked",
+  "createdAt": 0,
+  "fixed": true
+ },
+ "photos/p2538": {
+  "assetId": "file:photos/IMG_2538.jpg",
+  "analysis": {
+   "item": "Faux-fur collar wrap jacket",
+   "brand": "Avec Les Filles",
+   "category": "Outerwear",
+   "colors": [
+    "#3f3a2c",
+    "#5a3d2b",
+    "#2a2a22"
+   ],
+   "tags": [
+    "faux fur",
+    "shawl collar",
+    "belted",
+    "quilted lining",
+    "olive"
+   ],
+   "note": "Plush mink-brown fur against crinkled olive nylon, belted at the waist."
+  },
+  "createdAt": 1794071193452
+ },
+ "items/hp2538": {
+  "source": "photo",
+  "photoId": "p2538",
+  "photoAsset": "file:photos/IMG_2538.jpg",
+  "title": "Belted faux-fur shawl-collar wrap jacket, olive",
+  "brand": "Avec Les Filles",
+  "category": "Outerwear",
+  "estPrice": "$150–$220",
+  "tagText": null,
+  "why": "Plush mink-brown fur against crinkled olive nylon, belted at the waist.",
+  "query": "Avec Les Filles faux fur collar belted wrap jacket",
+  "colors": [
+   "#3f3a2c",
+   "#5a3d2b",
+   "#2a2a22"
+  ],
+  "texture": "solid",
+  "status": "fav",
+  "lists": [
+   "hand-picked"
+  ],
+  "createdAt": 1794071193452
+ },
+ "photos/p2541": {
+  "assetId": "file:photos/IMG_2541.jpg",
+  "analysis": {
+   "item": "Short-sleeve cable-knit sweater",
+   "brand": "French Connection",
+   "category": "Knitwear",
+   "colors": [
+    "#efe7d6",
+    "#d9cdb4"
+   ],
+   "tags": [
+    "cable knit",
+    "short sleeve",
+    "cream",
+    "cropped",
+    "chunky"
+   ],
+   "note": "Chunky cables in a cropped short-sleeve shape that layers over anything."
+  },
+  "createdAt": 1794071192452
+ },
+ "items/hp2541": {
+  "source": "photo",
+  "photoId": "p2541",
+  "photoAsset": "file:photos/IMG_2541.jpg",
+  "title": "Short-sleeve cable-knit crewneck sweater, cream",
+  "brand": "French Connection",
+  "category": "Knitwear",
+  "estPrice": "$118",
+  "tagText": "Style 78OA2 · $118",
+  "why": "Chunky cables in a cropped short-sleeve shape that layers over anything.",
+  "query": "French Connection short sleeve cable knit sweater cream",
+  "colors": [
+   "#efe7d6",
+   "#d9cdb4"
+  ],
+  "texture": "solid",
+  "status": "fav",
+  "lists": [
+   "hand-picked"
+  ],
+  "createdAt": 1794071192452
+ },
+ "photos/p2540": {
+  "assetId": "file:photos/IMG_2540.jpg",
+  "analysis": {
+   "item": "Herringbone mini skirt with horsebit trim",
+   "brand": "French Connection (likely)",
+   "category": "Skirts",
+   "colors": [
+    "#8a7563",
+    "#d6c8b4",
+    "#b38b3e"
+   ],
+   "tags": [
+    "herringbone",
+    "tweed",
+    "gold hardware",
+    "equestrian",
+    "mini"
+   ],
+   "note": "Equestrian herringbone with polished gold buckle details; there's a matching blazer."
+  },
+  "createdAt": 1794071191452
+ },
+ "items/hp2540": {
+  "source": "photo",
+  "photoId": "p2540",
+  "photoAsset": "file:photos/IMG_2540.jpg",
+  "title": "Herringbone tweed mini skirt with gold horsebit pocket trim",
+  "brand": "French Connection",
+  "category": "Skirts",
+  "estPrice": "$80–$120",
+  "tagText": null,
+  "why": "Equestrian herringbone with polished gold buckle details; there's a matching blazer.",
+  "query": "herringbone mini skirt gold horsebit hardware pocket",
+  "colors": [
+   "#8a7563",
+   "#d6c8b4",
+   "#b38b3e"
+  ],
+  "texture": "solid",
+  "status": "fav",
+  "lists": [
+   "hand-picked"
+  ],
+  "createdAt": 1794071191452
+ },
+ "photos/p2537": {
+  "assetId": "file:photos/IMG_2537.jpg",
+  "analysis": {
+   "item": "Military braided jacket",
+   "brand": "Avec Les Filles",
+   "category": "Outerwear",
+   "colors": [
+    "#4f4d34",
+    "#6b6a45",
+    "#b8a36a"
+   ],
+   "tags": [
+    "military",
+    "frogging",
+    "gold buttons",
+    "peplum",
+    "textured"
+   ],
+   "note": "Mandarin collar, rope frogging and gold buttons give it a Victorian officer look."
+  },
+  "createdAt": 1794071190452
+ },
+ "items/hp2537": {
+  "source": "photo",
+  "photoId": "p2537",
+  "photoAsset": "file:photos/IMG_2537.jpg",
+  "title": "Military band jacket with braided frogging and gold buttons, olive",
+  "brand": "Avec Les Filles",
+  "category": "Outerwear",
+  "estPrice": "$120–$180",
+  "tagText": null,
+  "why": "Mandarin collar, rope frogging and gold buttons give it a Victorian officer look.",
+  "query": "Avec Les Filles military jacket braided frog closure olive",
+  "colors": [
+   "#4f4d34",
+   "#6b6a45",
+   "#b8a36a"
+  ],
+  "texture": "solid",
+  "status": "fav",
+  "lists": [
+   "hand-picked"
+  ],
+  "createdAt": 1794071190452
+ },
+ "photos/p2536": {
+  "assetId": "file:photos/IMG_2536.jpg",
+  "analysis": {
+   "item": "Floral tapestry mini skirt",
+   "brand": "Avec Les Filles",
+   "category": "Skirts",
+   "colors": [
+    "#ddd0ae",
+    "#9a5a46",
+    "#6e7a4a"
+   ],
+   "tags": [
+    "tapestry",
+    "jacquard",
+    "rose floral",
+    "vintage",
+    "mini"
+   ],
+   "note": "Old-world rose tapestry in faded rust, sage and blue."
+  },
+  "createdAt": 1794071189452
+ },
+ "items/hp2536": {
+  "source": "photo",
+  "photoId": "p2536",
+  "photoAsset": "file:photos/IMG_2536.jpg",
+  "title": "Floral tapestry jacquard mini skirt",
+  "brand": "Avec Les Filles",
+  "category": "Skirts",
+  "estPrice": "$70–$110",
+  "tagText": null,
+  "why": "Old-world rose tapestry in faded rust, sage and blue.",
+  "query": "Avec Les Filles tapestry jacquard floral mini skirt",
+  "colors": [
+   "#ddd0ae",
+   "#9a5a46",
+   "#6e7a4a"
+  ],
+  "texture": "solid",
+  "status": "fav",
+  "lists": [
+   "hand-picked"
+  ],
+  "createdAt": 1794071189452
+ },
+ "photos/p2535": {
+  "assetId": "file:photos/IMG_2535.jpg",
+  "analysis": {
+   "item": "Plaid mini skirt",
+   "brand": "Avec Les Filles",
+   "category": "Skirts",
+   "colors": [
+    "#c9b89a",
+    "#8f99a6",
+    "#3b3a35"
+   ],
+   "tags": [
+    "plaid",
+    "tartan",
+    "mini",
+    "neutral",
+    "preppy"
+   ],
+   "note": "Soft taupe and dusty-blue plaid, a little preppy."
+  },
+  "createdAt": 1794071188452
+ },
+ "items/hp2535": {
+  "source": "photo",
+  "photoId": "p2535",
+  "photoAsset": "file:photos/IMG_2535.jpg",
+  "title": "Taupe and blue plaid mini skirt",
+  "brand": "Avec Les Filles",
+  "category": "Skirts",
+  "estPrice": "$60–$90",
+  "tagText": null,
+  "why": "Soft taupe and dusty-blue plaid, a little preppy.",
+  "query": "Avec Les Filles plaid mini skirt taupe blue",
+  "colors": [
+   "#c9b89a",
+   "#8f99a6",
+   "#3b3a35"
+  ],
+  "texture": "solid",
+  "status": "fav",
+  "lists": [
+   "hand-picked"
+  ],
+  "createdAt": 1794071188452
+ },
+ "photos/p2534": {
+  "assetId": "file:photos/IMG_2534.jpg",
+  "analysis": {
+   "item": "Croc-embossed faux leather pants",
+   "brand": "Avec Les Filles",
+   "category": "Pants",
+   "colors": [
+    "#4e1f2a",
+    "#7a3a46",
+    "#b08a3a"
+   ],
+   "tags": [
+    "croc embossed",
+    "faux leather",
+    "burgundy",
+    "five pocket",
+    "gold rivets"
+   ],
+   "note": "Glossy oxblood croc texture with gold rivets."
+  },
+  "createdAt": 1794071187452
+ },
+ "items/hp2534": {
+  "source": "photo",
+  "photoId": "p2534",
+  "photoAsset": "file:photos/IMG_2534.jpg",
+  "title": "Croc-embossed faux leather straight-leg pants, burgundy",
+  "brand": "Avec Les Filles",
+  "category": "Pants",
+  "estPrice": "$90–$140",
+  "tagText": null,
+  "why": "Glossy oxblood croc texture with gold rivets.",
+  "query": "Avec Les Filles croc embossed faux leather pants burgundy",
+  "colors": [
+   "#4e1f2a",
+   "#7a3a46",
+   "#b08a3a"
+  ],
+  "texture": "solid",
+  "status": "fav",
+  "lists": [
+   "hand-picked"
+  ],
+  "createdAt": 1794071187452
+ },
+ "photos/p2533": {
+  "assetId": "file:photos/IMG_2533.jpg",
+  "analysis": {
+   "item": "Bell-sleeve rib knit dress",
+   "brand": "Avec Les Filles",
+   "category": "Dresses",
+   "colors": [
+    "#9b1b2a",
+    "#6e1220"
+   ],
+   "tags": [
+    "rib knit",
+    "bell sleeve",
+    "cherry red",
+    "fitted",
+    "ties"
+   ],
+   "note": "Cherry-red rib knit with fluted bell cuffs."
+  },
+  "createdAt": 1794071186452
+ },
+ "items/hp2533": {
+  "source": "photo",
+  "photoId": "p2533",
+  "photoAsset": "file:photos/IMG_2533.jpg",
+  "title": "Bell-sleeve ribbed knit mini dress with tie details, red",
+  "brand": "Avec Les Filles",
+  "category": "Dresses",
+  "estPrice": "$80–$120",
+  "tagText": null,
+  "why": "Cherry-red rib knit with fluted bell cuffs.",
+  "query": "Avec Les Filles red rib knit bell sleeve dress",
+  "colors": [
+   "#9b1b2a",
+   "#6e1220"
+  ],
+  "texture": "solid",
+  "status": "fav",
+  "lists": [
+   "hand-picked"
+  ],
+  "createdAt": 1794071186452
+ },
+ "photos/p2529": {
+  "assetId": "file:photos/IMG_2529.jpg",
+  "analysis": {
+   "item": "Glen plaid button-front dress",
+   "brand": "French Connection",
+   "category": "Dresses",
+   "colors": [
+    "#8b8580",
+    "#2f2b2a",
+    "#7a2230"
+   ],
+   "tags": [
+    "glen plaid",
+    "pearl buttons",
+    "cap sleeve",
+    "pleated",
+    "ladylike"
+   ],
+   "note": "Grey glen check with a burgundy windowpane and pearl-and-gold buttons."
+  },
+  "createdAt": 1794071185452
+ },
+ "items/hp2529": {
+  "source": "photo",
+  "photoId": "p2529",
+  "photoAsset": "file:photos/IMG_2529.jpg",
+  "title": "Glen plaid cap-sleeve mini dress with pearl buttons",
+  "brand": "French Connection",
+  "category": "Dresses",
+  "estPrice": "$110–$150",
+  "tagText": null,
+  "why": "Grey glen check with a burgundy windowpane and pearl-and-gold buttons.",
+  "query": "French Connection glen plaid pearl button mini dress",
+  "colors": [
+   "#8b8580",
+   "#2f2b2a",
+   "#7a2230"
+  ],
+  "texture": "solid",
+  "status": "fav",
+  "lists": [
+   "hand-picked"
+  ],
+  "createdAt": 1794071185452
+ },
+ "photos/p2528": {
+  "assetId": "file:photos/IMG_2528.jpg",
+  "analysis": {
+   "item": "Black dress with embellished collar",
+   "brand": "French Connection (likely)",
+   "category": "Dresses",
+   "colors": [
+    "#151313",
+    "#e8e4dc"
+   ],
+   "tags": [
+    "little black dress",
+    "pearl collar",
+    "embellished",
+    "short sleeve",
+    "Peter Pan collar"
+   ],
+   "note": "A simple black dress made special by a beaded pearl collar."
+  },
+  "createdAt": 1794071184452
+ },
+ "items/hp2528": {
+  "source": "photo",
+  "photoId": "p2528",
+  "photoAsset": "file:photos/IMG_2528.jpg",
+  "title": "Short-sleeve black mini dress with pearl-embellished collar",
+  "brand": "French Connection",
+  "category": "Dresses",
+  "estPrice": "$100–$150",
+  "tagText": null,
+  "why": "A simple black dress made special by a beaded pearl collar.",
+  "query": "pearl embellished collar black mini dress short sleeve",
+  "colors": [
+   "#151313",
+   "#e8e4dc"
+  ],
+  "texture": "solid",
+  "status": "fav",
+  "lists": [
+   "hand-picked"
+  ],
+  "createdAt": 1794071184452
+ },
+ "photos/p2527": {
+  "assetId": "file:photos/IMG_2527.jpg",
+  "analysis": {
+   "item": "Sparkle boucle mini skirt",
+   "brand": "French Connection (likely)",
+   "category": "Skirts",
+   "colors": [
+    "#9e1c2c",
+    "#c6404f"
+   ],
+   "tags": [
+    "boucle",
+    "tweed",
+    "metallic",
+    "holiday red",
+    "mini"
+   ],
+   "note": "Holiday-red boucle with a fine sparkle thread."
+  },
+  "createdAt": 1794071183452
+ },
+ "items/hp2527": {
+  "source": "photo",
+  "photoId": "p2527",
+  "photoAsset": "file:photos/IMG_2527.jpg",
+  "title": "Red metallic tweed boucle mini skirt with fold-over waist",
+  "brand": "French Connection",
+  "category": "Skirts",
+  "estPrice": "$70–$110",
+  "tagText": null,
+  "why": "Holiday-red boucle with a fine sparkle thread.",
+  "query": "red metallic tweed boucle mini skirt fold over waist",
+  "colors": [
+   "#9e1c2c",
+   "#c6404f"
+  ],
+  "texture": "solid",
+  "status": "fav",
+  "lists": [
+   "hand-picked"
+  ],
+  "createdAt": 1794071183452
+ },
+ "photos/p2524": {
+  "assetId": "file:photos/IMG_2524.jpg",
+  "analysis": {
+   "item": "Stretch knee-high lug boots",
+   "brand": "Kurt Geiger London",
+   "category": "Shoes",
+   "colors": [
+    "#2a2826",
+    "#5a463c",
+    "#151413"
+   ],
+   "tags": [
+    "knee high",
+    "stretch",
+    "lug sole",
+    "faux leather",
+    "suede"
+   ],
+   "note": "Sleek stretch shaft on a chunky lug sole, in black or chocolate suede."
+  },
+  "createdAt": 1794071182452
+ },
+ "items/hp2524": {
+  "source": "photo",
+  "photoId": "p2524",
+  "photoAsset": "file:photos/IMG_2524.jpg",
+  "title": "Stretch knee-high pull-on boots with chunky lug sole",
+  "brand": "Kurt Geiger London",
+  "category": "Shoes",
+  "estPrice": "$250–$350",
+  "tagText": null,
+  "why": "Sleek stretch shaft on a chunky lug sole, in black or chocolate suede.",
+  "query": "Kurt Geiger stretch knee high boot lug sole",
+  "colors": [
+   "#2a2826",
+   "#5a463c",
+   "#151413"
+  ],
+  "texture": "solid",
+  "status": "fav",
+  "lists": [
+   "hand-picked"
+  ],
+  "createdAt": 1794071182452
+ },
+ "photos/p2523": {
+  "assetId": "file:photos/IMG_2523.jpg",
+  "analysis": {
+   "item": "Knit-cuff Chelsea boots",
+   "brand": "Kurt Geiger London",
+   "category": "Shoes",
+   "colors": [
+    "#141414",
+    "#3b3b3b",
+    "#b38b3e"
+   ],
+   "tags": [
+    "Chelsea boot",
+    "knit cuff",
+    "block heel",
+    "lug sole",
+    "gold eagle"
+   ],
+   "note": "Leather Chelsea with a ribbed sweater cuff and the gold eagle on the heel."
+  },
+  "createdAt": 1794071181452
+ },
+ "items/hp2523": {
+  "source": "photo",
+  "photoId": "p2523",
+  "photoAsset": "file:photos/IMG_2523.jpg",
+  "title": "Leather Chelsea ankle boots with knit sock cuff and eagle-head hardware",
+  "brand": "Kurt Geiger London",
+  "category": "Shoes",
+  "estPrice": "$250–$320",
+  "tagText": null,
+  "why": "Leather Chelsea with a ribbed sweater cuff and the gold eagle on the heel.",
+  "query": "Kurt Geiger knit cuff chelsea boot black leather",
+  "colors": [
+   "#141414",
+   "#3b3b3b",
+   "#b38b3e"
+  ],
+  "texture": "solid",
+  "status": "fav",
+  "lists": [
+   "hand-picked"
+  ],
+  "createdAt": 1794071181452
+ },
+ "photos/p2522": {
+  "assetId": "file:photos/IMG_2522.jpg",
+  "analysis": {
+   "item": "Chunky lug Chelsea boots",
+   "brand": "Kurt Geiger London",
+   "category": "Shoes",
+   "colors": [
+    "#1c1b1a",
+    "#4f3b33"
+   ],
+   "tags": [
+    "lug sole",
+    "Chelsea",
+    "chunky",
+    "suede",
+    "leather"
+   ],
+   "note": "Chunky lug Chelseas with a rubber toe cap."
+  },
+  "createdAt": 1794071180452
+ },
+ "items/hp2522": {
+  "source": "photo",
+  "photoId": "p2522",
+  "photoAsset": "file:photos/IMG_2522.jpg",
+  "title": "Chunky lug-sole Chelsea boots, black leather or brown suede",
+  "brand": "Kurt Geiger London",
+  "category": "Shoes",
+  "estPrice": "$220–$300",
+  "tagText": null,
+  "why": "Chunky lug Chelseas with a rubber toe cap.",
+  "query": "Kurt Geiger chunky lug sole chelsea boot",
+  "colors": [
+   "#1c1b1a",
+   "#4f3b33"
+  ],
+  "texture": "solid",
+  "status": "fav",
+  "lists": [
+   "hand-picked"
+  ],
+  "createdAt": 1794071180452
+ },
+ "items/f1": {
+  "title": "Tweed riding blazer with gold buttons",
+  "brand": "Sézane",
+  "category": "Outerwear",
+  "estPrice": "$250–$330",
+  "why": "Pairs with her herringbone skirt and echoes the military jacket's gold buttons.",
+  "query": "Sezane tweed blazer gold buttons brown",
+  "colors": [
+   "#6b5442",
+   "#c9b79c",
+   "#b38b3e"
+  ],
+  "texture": "herringbone",
+  "status": "new",
+  "lists": [],
+  "createdAt": 1794071198452,
+  "batch": 1794071198452
+ },
+ "items/f2": {
+  "title": "Tapestry jacquard shoulder bag",
+  "brand": "& Other Stories",
+  "category": "Bags",
+  "estPrice": "$80–$130",
+  "why": "The tapestry florals she loved, in a bag she can wear with everything.",
+  "query": "& Other Stories jacquard tapestry shoulder bag",
+  "colors": [
+   "#d8c9a6",
+   "#8f4b3c",
+   "#5f6b43"
+  ],
+  "texture": "tapestry",
+  "status": "new",
+  "lists": [],
+  "createdAt": 1794071198453,
+  "batch": 1794071198452
+ },
+ "items/f3": {
+  "title": "Burgundy cable-knit cardigan with pearl buttons",
+  "brand": "Sézane",
+  "category": "Knitwear",
+  "estPrice": "$140–$190",
+  "why": "Her cream cable knit, in oxblood with pearl buttons like the glen plaid dress.",
+  "query": "Sezane burgundy cable knit cardigan pearl buttons",
+  "colors": [
+   "#6e1f26",
+   "#4c141a",
+   "#efe6d4"
+  ],
+  "texture": "knit",
+  "status": "new",
+  "lists": [],
+  "createdAt": 1794071198454,
+  "batch": 1794071198452
+ },
+ "items/f4": {
+  "title": "Croc-embossed leather belt with gold buckle",
+  "brand": "Polo Ralph Lauren",
+  "category": "Accessories",
+  "estPrice": "$60–$100",
+  "why": "Gold hardware and croc texture to tie her pants and minis together.",
+  "query": "Polo Ralph Lauren croc embossed leather belt gold buckle",
+  "colors": [
+   "#4a2a20",
+   "#b38b3e"
+  ],
+  "texture": "croc",
+  "status": "new",
+  "lists": [],
+  "createdAt": 1794071198455,
+  "batch": 1794071198452
+ },
+ "items/f5": {
+  "title": "Waxed field jacket with cord collar",
+  "brand": "Barbour",
+  "category": "Outerwear",
+  "estPrice": "$300–$450",
+  "why": "Olive heritage outerwear in the spirit of her military jacket.",
+  "query": "Barbour waxed jacket women olive corduroy collar",
+  "colors": [
+   "#4b4a30",
+   "#6a4b33"
+  ],
+  "texture": "leather",
+  "status": "new",
+  "lists": [],
+  "createdAt": 1794071198456,
+  "batch": 1794071198452
+ },
+ "items/f6": {
+  "title": "Velvet bow headband, chocolate",
+  "brand": "J.Crew",
+  "category": "Accessories",
+  "estPrice": "$30–$45",
+  "why": "A small romantic touch that reads vintage with tapestry and tweed.",
+  "query": "J.Crew velvet bow headband brown",
+  "colors": [
+   "#4a3026",
+   "#2e1d16"
+  ],
+  "texture": "suede",
+  "status": "new",
+  "lists": [],
+  "createdAt": 1794071198457,
+  "batch": 1794071198452
+ },
+ "items/f7": {
+  "title": "Faux-fur collar cropped jacket, chocolate",
+  "brand": "Free People",
+  "category": "Outerwear",
+  "estPrice": "$148–$198",
+  "why": "Same plush collar she reached for, in a cropped chocolate cut.",
+  "query": "Free People faux fur collar cropped jacket brown",
+  "colors": [
+   "#5a3d2b",
+   "#3a281e",
+   "#c9b48a"
+  ],
+  "texture": "fur",
+  "status": "new",
+  "lists": [],
+  "createdAt": 1794071198458,
+  "batch": 1794071198452
+ },
+ "items/f8": {
+  "title": "Suede lug-sole loafers with horsebit",
+  "brand": "Sam Edelman",
+  "category": "Shoes",
+  "estPrice": "$120–$160",
+  "why": "Equestrian gold hardware on the chunky sole she liked at Kurt Geiger.",
+  "query": "Sam Edelman lug sole loafer horsebit suede brown",
+  "colors": [
+   "#4a3026",
+   "#1b1714",
+   "#b38b3e"
+  ],
+  "texture": "suede",
+  "status": "new",
+  "lists": [],
+  "createdAt": 1794071198459,
+  "batch": 1794071198452
+ },
+ "app/profile": {
+  "style": {
+   "summary": "Heritage tailoring with a romantic vintage streak: equestrian herringbone, tapestry florals, glen plaid and military braid, warmed by oxblood, chocolate and olive and finished in gold hardware, pearls and chunky lug boots.",
+   "palette": [
+    {
+     "name": "Oxblood",
+     "hex": "#6e1f26"
+    },
+    {
+     "name": "Chocolate",
+     "hex": "#4a3026"
+    },
+    {
+     "name": "Olive",
+     "hex": "#55552f"
+    },
+    {
+     "name": "Camel",
+     "hex": "#a88b62"
+    },
+    {
+     "name": "Cream",
+     "hex": "#efe6d4"
+    },
+    {
+     "name": "Holiday red",
+     "hex": "#9e1c2c"
+    },
+    {
+     "name": "Antique gold",
+     "hex": "#b38b3e"
+    }
+   ],
+   "fabrics": [
+    "herringbone tweed",
+    "tapestry jacquard",
+    "glen plaid",
+    "boucle",
+    "croc-embossed leather",
+    "cable knit",
+    "faux fur",
+    "suede"
+   ],
+   "silhouettes": [
+    "mini skirts",
+    "fitted mini dresses",
+    "cropped jackets",
+    "straight-leg pants",
+    "knee-high and Chelsea boots"
+   ],
+   "details": [
+    "gold hardware",
+    "horsebit trim",
+    "military frogging",
+    "pearl buttons",
+    "embellished collars",
+    "belted waists",
+    "lug soles"
+   ],
+   "brands": [
+    "Avec Les Filles",
+    "French Connection",
+    "Kurt Geiger",
+    "Sézane",
+    "& Other Stories",
+    "Polo Ralph Lauren",
+    "Barbour",
+    "Free People",
+    "Sam Edelman"
+   ],
+   "avoid": []
+  },
+  "sizes": {},
+  "budget": {
+   "min": null,
+   "max": null
+  },
+  "lastFeedAt": 0,
+  "refinedAt": 1794071193452
+ }
+}
