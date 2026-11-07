@@ -1,6 +1,6 @@
-# Sage Advice
+# Sage
 
-Hand-picked clothing for Sage. Snap a photo of anything she stops at in a store and Claude identifies the piece, searches the web for where to buy it, and files it in **Sage’s Hand Picked** with a buy link. It also pulls fresh picks in her style every day, and learns from what she saves and skips.
+Sage advice for Sage: hand-picked clothing. Snap a photo of anything she stops at in a store and Claude identifies the piece, searches the web for where to buy it, and files it in **Sage’s Hand Picked** with a buy link. It also pulls fresh picks in her style every day, and learns from what she saves and skips.
 
 ## Use it
 

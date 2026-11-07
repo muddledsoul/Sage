@@ -4,12 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Sage Advice">
+<meta name="apple-mobile-web-app-title" content="Sage">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="icons/favicon-64.png">
+<link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#6e1f26">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
-<title>Sage Advice</title>
+<title>Sage</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Figtree:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap">
@@ -207,8 +212,8 @@ main{padding-block:22px 64px}
 
 <header class="wrap mast">
   <div>
-    <h1>Sage Advice</h1>
-    <div class="sub">Hand-picked for Sage · heritage, tapestry &amp; gold hardware</div>
+    <h1>Sage</h1>
+    <div class="sub">Sage advice · hand-picked pieces &amp; where to buy them</div>
   </div>
   <div class="sizes-line" id="sizesLine">Sizes not set yet</div>
 </header>
@@ -220,7 +225,7 @@ main{padding-block:22px 64px}
 
 <script>
 (() => {
-const APP_VERSION = "1.4.0";
+const APP_VERSION = "1.5.0";
 const APP_BUILD = "2026-11-07";
 const CATS = ["Outerwear","Knitwear","Tops","Skirts","Dresses","Pants","Shoes","Bags","Accessories"];
 const TEXTURES = ["herringbone","plaid","tapestry","croc","knit","boucle","fur","suede","leather","satin","solid"];
@@ -428,7 +433,7 @@ function settingsPanel(){
 function footer(){
   const mode = S.local ? "GitHub · your API key" : (window.claude?.use ? "Claude app" : "Preview");
   const d = new Date(APP_BUILD+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
-  $("#foot").innerHTML = `<span>Sage Advice <b>v${APP_VERSION}</b></span><span>Built ${esc(d)}</span><span>${esc(mode)}</span>`
+  $("#foot").innerHTML = `<span>Sage <b>v${APP_VERSION}</b></span><span>Built ${esc(d)}</span><span>${esc(mode)}</span>`
     + (S.newer ? `<button class="upd" data-act="reload">Update to v${esc(S.newer)}</button>` : "");
 }
 async function checkVersion(){

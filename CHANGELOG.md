@@ -9,6 +9,11 @@ Versions follow [semver](https://semver.org): MAJOR.MINOR.PATCH. Every release i
 
 Open copies of the app check `version.json` when brought to the front and offer an **Update** button when a newer version is live.
 
+## 1.5.0 — 2026-11-07
+- Renamed to **Sage**.
+- New home-screen icon: cream Bodoni S with a sage sprig and gold horsebit on herringbone oxblood (`icons/`).
+- Web app manifest so it installs with the icon and opens full screen.
+
 ## 1.4.0 — 2026-11-07
 - Product photos no longer fall back to swatches when a store blocks its images: each photo tries the store link, then an image relay (images.weserv.nl), then the product page's preview image (via microlink.io), before showing a swatch.
 - The listing finder now copies photo links from the page instead of guessing, and keeps backups.
