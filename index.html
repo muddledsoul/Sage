@@ -85,6 +85,9 @@ main{padding-block:22px 64px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
 .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;min-width:0;overflow:hidden}
 .sw{aspect-ratio:5/4;max-width:100%;position:relative;--c1:#6e1f26;--c2:#3b2a22;--c3:#c9b48a}
+.sw.prod{background:#fff}
+.sw.prod img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff;display:block}
+.sw .finding{position:absolute;inset:auto 10px 10px auto;background:var(--paper);color:var(--muted);font-size:11px;padding:4px 8px;border-radius:2px;display:flex;gap:6px;align-items:center}
 .sw .tag{position:absolute;left:10px;top:10px;background:var(--paper);color:var(--ink);font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:4px 8px;border-radius:2px}
 .sw .newdot{position:absolute;right:10px;top:10px;background:var(--gold);color:#1b1411;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:4px 7px;border-radius:2px}
 .body{padding:14px 14px 12px;display:flex;flex-direction:column;gap:6px;flex:1}
@@ -251,7 +254,7 @@ const BRAND_SITES = [
 function links(it){
   const q = (it.query || `${it.brand} ${it.title}`).trim();
   const out = [];
-  if (/^https:\/\//.test(it.url||"")) { let host=""; try{ host=new URL(it.url).hostname.replace(/^www\./,""); }catch{} out.push({label:"Buy",href:it.url,main:true,host}); out.push({label:"Google Shopping",href:"https://www.google.com/search?tbm=shop&q="+enc(q)}); }
+  if (/^https:\/\//.test(it.url||"")) { let host=""; try{ host=new URL(it.url).hostname.replace(/^www\./,""); }catch{} out.push({label:"Buy",href:it.url,main:true,host,retailer:it.retailer}); out.push({label:"Google Shopping",href:"https://www.google.com/search?tbm=shop&q="+enc(q)}); }
   else out.push({label:"Shop",href:"https://www.google.com/search?tbm=shop&q="+enc(q),main:true});
   for (const [re,label,base] of BRAND_SITES) if (re.test(it.brand||"")) { out.push({label,href:base+enc(q)}); break; }
   out.push({label:"Nordstrom",href:"https://www.nordstrom.com/sr?keyword="+enc(q)});
@@ -270,6 +273,8 @@ function tabs(){
   const t = [["picks","Picks",vis.filter(i=>i.status!=="fav"&&i.source!=="photo").length],["saved","Saved",S.items.filter(i=>i.status==="fav").length],["lists","Lists",S.lists.length],["style","Sage’s style",S.photos.length]];
   $("#tabs").innerHTML = t.map(([k,l,n])=>`<button class="tab" role="tab" data-act="tab" data-tab="${k}" aria-selected="${S.tab===k}">${l}<span class="n">${n||""}</span></button>`).join("");
 }
+function swatchInner(it){ const c=(it.colors||[]).map(hex).filter(Boolean); const tex=TEXTURES.includes(it.texture)?it.texture:"solid";
+  return `<div class="t-${tex}" style="position:absolute;inset:0;--c1:${c[0]||"#6e1f26"};--c2:${c[1]||c[0]||"#3b2a22"};--c3:${c[2]||c[1]||"#c9b48a"}"></div>`; }
 function swatch(it){
   const c = (it.colors||[]).map(hex).filter(Boolean);
   const tex = TEXTURES.includes(it.texture) ? it.texture : "solid";
@@ -278,6 +283,7 @@ function swatch(it){
     <span class="tag">${esc(it.category||"Piece")}</span>${fresh?'<span class="newdot">New</span>':""}</div>`;
 }
 function art(it){
+  if (it.image && !it.photoAsset) return `<div class="sw prod">${swatchInner(it)}<img src="${esc(it.image)}" alt="${esc(it.title)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"><span class="tag">${esc(it.category||"Piece")}</span></div>`;
   if (it.photoAsset) return `<div class="sw" style="background:var(--line)"><img src="${esc(imgUrl(it.photoAsset))}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.remove()"><span class="tag">From your photo</span></div>`;
   return swatch(it);
 }
@@ -286,22 +292,22 @@ function card(it,{inList}={}){
   const L = links(it);
   const fav = it.status==="fav";
   return `<article class="card" data-id="${esc(it.id)}">
-    ${art(it)}
+    ${art(it).replace(/<\/div>$/, S.finding===it.id?'<span class="finding"><span class="spin"></span>Finding it</span></div>':"</div>")}
     <div class="body">
       <div class="brand">${esc(it.brand)}</div>
       <h3 class="ttl">${esc(it.title)}</h3>
-      <div class="price"><span>${esc(it.estPrice||"")}</span>${it.tagText?`<span>${esc(it.tagText)}</span>`:""}${sz?`<span class="sz">Her size ${esc(sz)}</span>`:""}</div>
+      <div class="price"><span>${esc(it.listedPrice||it.estPrice||"")}</span>${it.tagText?`<span>${esc(it.tagText)}</span>`:""}${sz?`<span class="sz">Her size ${esc(sz)}</span>`:""}</div>
       ${it.why?`<p class="why">${esc(it.why)}</p>`:""}
-      ${L[0].host?`<div class="price"><span class="sz">Found at ${esc(L[0].host)}</span></div>`:""}
+      ${L[0].host?`<div class="price"><span class="sz">Found at ${esc(L[0].retailer||L[0].host)}</span></div>`:it.lookedUp&&!it.url?`<div class="price"><span>No exact listing found yet</span></div>`:""}
     </div>
-    <div class="more">${L.slice(1).map(l=>`<a href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("")}</div>
+    <div class="more">${L.slice(1).map(l=>`<a href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("")}${S.local&&S.sample&&!it.url?`<a href="#" data-act="find">${S.finding===it.id?"Finding…":it.lookedUp?"Search again":"Find listing"}</a>`:""}</div>
     <div class="acts">
       <button class="ico" data-act="fav" aria-pressed="${fav}" aria-label="${fav?"Remove from saved":"Save"}" title="${fav?"Saved":"Save"}">${fav?ICON.heartF:ICON.heart}</button>
       <button class="ico" data-act="addlist" aria-label="Add to a list" title="Add to a list">${ICON.list}</button>
       ${inList?`<button class="ico" data-act="unlist" data-list="${esc(inList)}" aria-label="Remove from this list" title="Remove from this list">${ICON.x}</button>`
         : it.status==="no" ? `<button class="ico" data-act="restore" aria-label="Bring back" title="Bring back">${ICON.undo}</button>`
         : `<button class="ico" data-act="no" aria-label="Not her style" title="Not her style">${ICON.x}</button>`}
-      <div class="shop"><a href="${esc(L[0].href)}" target="_blank" rel="noopener">${L[0].label}</a></div>
+      <div class="shop"><a href="${esc(L[0].href)}" target="_blank" rel="noopener">${L[0].label}${it.url&&it.listedPrice?` · ${esc(it.listedPrice)}`:""}</a></div>
     </div>
   </article>`;
 }
@@ -421,7 +427,7 @@ async function setItem(id,patch){ try { await S.db.doc("items/"+id).update(patch
 
 function subscribe(){
   let got=0; const timer=setTimeout(()=>{ if(!S.ready){ S.ready=true; render(); toast("Still connecting. Showing what's saved so far."); } },10000);
-  const done=()=>{ if(++got>=4 && !S.ready){ S.ready=true; clearTimeout(timer); render(); maybeAuto(); } else if (S.ready) render(); };
+  const done=()=>{ if(++got>=4 && !S.ready){ S.ready=true; clearTimeout(timer); render(); maybeAuto(); setTimeout(autoFind,300); } else if (S.ready) render(); };
   const onErr = e => { if(e?.code==="revoked"){ S.canWrite=false; } clearTimeout(timer); S.ready=true; render(); };
   let p=false,i=false,ph=false,l=false;
   S.db.doc("app/profile").onSnapshot(s=>{ S.profile = s.exists ? {...s.data()} : null; if(!p){p=true;done();} else render(); }, onErr);
@@ -430,7 +436,7 @@ function subscribe(){
   S.db.collection("lists").orderBy("createdAt","asc").limit(100).onSnapshot(s=>{ S.lists=s.docs.map(d=>({id:d.id,...d.data()})); if(!l){l=true;done();} else render(); }, onErr);
 }
 function maybeAuto(){
-  if (S.autoRan || !S.sample || !S.canWrite || S.busy) return;
+  if (S.autoRan || !S.sample || !S.canWrite || S.busy) { return; }
   S.autoRan = true;
   const last = S.profile?.lastFeedAt || 0;
   if (Date.now()-last > DAY) getPicks(true);
@@ -462,11 +468,11 @@ Pieces she rejected (avoid this direction): ${c.nos.join("; ") || "none yet"}
 Already suggested, do NOT repeat or near-duplicate: ${seen.join("; ") || "none"}
 
 Suggest 8 NEW pieces she would love that real US retailers plausibly carry this season. Use real brands that sell this kind of item (e.g. Sézane, & Other Stories, Reformation, Free People, Anthropologie, Ganni, Polo Ralph Lauren, Barbour, Zara, Mango, French Connection, Avec Les Filles, Kurt Geiger, Sam Edelman, Madewell, J.Crew, Faithfull the Brand, Rails) and mix categories (at least 4 different). Stay inside the budget if given. Do not invent exact product names; describe the piece.
-${S.webSearch?`Use web search to find a real product page currently for sale for each piece (brand site or a major retailer), and include its "url". Prefer pieces you actually found in stock.\n`:""}Reply with only a JSON array of 8 objects:
-{"title": short descriptive name, "brand": brand, "category": one of ${JSON.stringify(CATS)}, "estPrice": typical range like "$90–$140", "why": one sentence under 20 words tying it to what she loved, "query": a 4-8 word shopping search phrase including the brand, "colors": 3 hex colors of the piece (main first), "texture": one of ${JSON.stringify(TEXTURES)}${S.webSearch?`, "url": the product page URL you found`:""}}`;
+Reply with only a JSON array of 8 objects:
+{"title": short descriptive name, "brand": brand, "category": one of ${JSON.stringify(CATS)}, "estPrice": typical range like "$90–$140", "why": one sentence under 20 words tying it to what she loved, "query": a 4-8 word shopping search phrase including the brand, "colors": 3 hex colors of the piece (main first), "texture": one of ${JSON.stringify(TEXTURES)}}`;
   const signal = stopable(auto ? "Pulling today's picks in her style…" : "Finding new pieces in her style…");
   try {
-    const arr = await S.sample.json(prompt,{signal,cache:false,search:S.webSearch});
+    const arr = await S.sample.json(prompt,{signal,cache:false});
     if (!Array.isArray(arr) || !arr.length) throw {code:"invalid_json"};
     const batch = Date.now(); let n=0;
     for (const r of arr.slice(0,10)) {
@@ -480,6 +486,7 @@ ${S.webSearch?`Use web search to find a real product page currently for sale for
     }
     await saveProfile({lastFeedAt:Date.now()});
     S.tab="picks"; S.cat="All"; toast(`${n} new picks added`);
+    if (S.local) setTimeout(()=>runFinder(S.items.filter(i=>i.batch===batch).map(i=>i.id)),400);
   } catch(e){ if (e?.code!=="cancelled") toast(errCopy(e)); }
   finally { idle(); }
 }
@@ -507,6 +514,50 @@ Reply with only a JSON object: {"summary": 1-2 sentences describing her style, "
   finally { idle(); }
 }
 
+async function findListing(it,signal){
+  const q = `Find this exact clothing piece for sale online right now in the US:
+Brand: ${it.brand}
+Piece: ${it.title}
+Search phrase: ${it.query||""}
+${it.tagText?`Tag: ${it.tagText}`:""}
+Search for it, then fetch the best-matching product page (the brand's own site or a major retailer such as Macy's, Nordstrom, Bloomingdale's, Revolve, Free People, Anthropologie). From the fetched page take the product's main photo URL (a direct https image URL from the retailer's image CDN, usually in an <img> or og:image), the current price, and the exact listed product name. If the exact piece is sold out or not found, use the closest in-stock match from the same brand and say so in "match".
+Reply with only a JSON object: {"url": product page URL or null, "image": direct product image URL or null, "price": current price like "$128" or null, "retailer": store name, "title": listed product name, "match": "exact" or "close" or "none"}`;
+  const r = await S.sample.json(q,{signal,search:true,searchUses:4,fetch:3});
+  const patch = {lookedUp:Date.now()};
+  if (r && /^https:\/\//.test(r.url||"")) {
+    patch.url=String(r.url).slice(0,600);
+    if (/^https:\/\//.test(r.image||"")) patch.image=String(r.image).slice(0,800);
+    if (r.price) patch.listedPrice=String(r.price).slice(0,20);
+    if (r.retailer) patch.retailer=String(r.retailer).slice(0,40);
+    if (r.match) patch.match=String(r.match).slice(0,10);
+    if (r.title && it.source!=="photo") patch.title=String(r.title).slice(0,120);
+  }
+  await S.db.doc("items/"+it.id).update(patch);
+  return !!patch.url;
+}
+async function runFinder(ids){
+  if (!S.local || !S.sample || S.busy) return;
+  const queue = ids.map(id=>S.items.find(i=>i.id===id)).filter(Boolean);
+  if (!queue.length) return;
+  const signal = stopable(`Finding real listings: 1 of ${queue.length}…`);
+  let found=0;
+  for (let k=0;k<queue.length;k++){
+    if (signal.aborted) break;
+    S.busy=`Finding real listings: ${k+1} of ${queue.length}…`; S.finding=queue[k].id; render();
+    try { if (await findListing(queue[k],signal)) found++; }
+    catch(e){ if (e?.code==="cancelled") break; if (["bad_key","rate_limited"].includes(e?.code)) { toast(errCopy(e)); break; } }
+  }
+  S.finding=null; idle();
+  if (found) toast(`Found ${found} listing${found===1?"":"s"} with photos`);
+}
+function autoFind(){
+  if (!S.local || !S.sample || S.autoFound) return;
+  if (S.busy) { setTimeout(autoFind,4000); return; }
+  S.autoFound = true;
+  const need = S.items.filter(i=>i.status!=="no" && !i.url && !i.lookedUp);
+  need.sort((a,b)=>(a.source==="photo")-(b.source==="photo"));
+  if (need.length) runFinder(need.slice(0,12).map(i=>i.id));
+}
 async function ensureHandPicked(){
   if (S.lists.some(l=>l.id==="hand-picked")) return;
   try { const r=S.db.doc("lists/hand-picked"); const g=await r.get(); if(!g.exists) await r.set({name:"Sage’s Hand Picked",createdAt:0,fixed:true}); } catch {}
@@ -531,8 +582,8 @@ async function addPhotos(files){
       let assetId = null;
       if (S.assets) { try { assetId = (await S.assets.upload(blob,{type:"image/jpeg"})).id; } catch(e){ if(e?.code==="quota_or_state") toast("Photo storage is full. Remove a few photos."); } }
       const a = await S.sample.json(`This photo was taken in a store (often Macy's Herald Square, NYC) of a piece Sage was drawn to: clothing, shoes or a bag. Identify the exact piece so it can be bought online later. Read any visible tag, label or sign: brand, style number, color name, price. If several pieces are in frame, pick the most prominent one being held or featured.
-Reply with only a JSON object: {"item": short name like "Herringbone mini skirt", "title": a precise product-style name as the retailer would list it, "brand": brand from a tag, label or sign, else your best guess with "(likely)" appended, or null, "category": one of ${JSON.stringify(CATS)}, "tagText": style number and/or price read off the tag (e.g. "Style 78OA2 · $118") or null, "estPrice": price range like "$90–$130" (use the tag price if visible), "query": a precise 4-10 word shopping search that finds THIS piece online (brand, product type, key fabric/detail/color, style number if read), "colors": 2-4 hex colors, "tags": 5-8 short descriptive tags (fabric, pattern, silhouette, hardware), "note": one sentence on what makes it appealing${S.webSearch?`, "url": the product page URL where this exact piece can be bought online (search for it; use the brand site or a major retailer such as Macy's or Nordstrom), or null if you could not find it`:""}}${S.webSearch?`\nSearch the web to find this exact piece for sale before answering.`:""}`,
-        {images:[blob],signal,cache:false,search:S.webSearch});
+Reply with only a JSON object: {"item": short name like "Herringbone mini skirt", "title": a precise product-style name as the retailer would list it, "brand": brand from a tag, label or sign, else your best guess with "(likely)" appended, or null, "category": one of ${JSON.stringify(CATS)}, "tagText": style number and/or price read off the tag (e.g. "Style 78OA2 · $118") or null, "estPrice": price range like "$90–$130" (use the tag price if visible), "query": a precise 4-10 word shopping search that finds THIS piece online (brand, product type, key fabric/detail/color, style number if read), "colors": 2-4 hex colors, "tags": 5-8 short descriptive tags (fabric, pattern, silhouette, hardware), "note": one sentence on what makes it appealing}`,
+        {images:[blob],signal,cache:false});
       const analysis = {item:String(a?.item||"Saved piece").slice(0,80),brand:a?.brand?String(a.brand).slice(0,60):null,category:CATS.includes(a?.category)?a.category:null,
         colors:(a?.colors||[]).map(hex).filter(Boolean).slice(0,4),tags:(a?.tags||[]).map(t=>String(t).slice(0,30)).slice(0,8),note:String(a?.note||"").slice(0,200)};
       const now = Date.now();
@@ -548,7 +599,8 @@ Reply with only a JSON object: {"item": short name like "Herringbone mini skirt"
     } catch(e){ if (e?.code==="cancelled") { idle(); break; } toast(errCopy(e)); }
   }
   idle();
-  if (added) { toast(`${added} piece${added===1?"":"s"} added to Sage’s Hand Picked`); await refineStyle(); }
+  if (added) { toast(`${added} piece${added===1?"":"s"} added to Sage’s Hand Picked`); await refineStyle();
+    if (S.local) runFinder(S.items.filter(i=>i.source==="photo" && !i.url && !i.lookedUp).slice(0,added).map(i=>i.id)); }
 }
 
 /* ---------- events ---------- */
@@ -564,6 +616,7 @@ document.addEventListener("click", async ev => {
     case "feed": getPicks(false); break;
     case "refine": refineStyle(); break;
     case "stop": S.ctl?.abort(); break;
+    case "find": ev.preventDefault(); if(id) runFinder([id]); break;
     case "exportdata": { const txt = LS.get("sage.db")||"{}"; try{ await navigator.clipboard.writeText(txt); toast("Backup copied. Paste it into a note to keep it."); }catch{ toast("Couldn't copy. Your browser blocked the clipboard."); } } break;
     case "fav": if(!live) return toast("Open in Claude to save pieces."); { const it=S.items.find(i=>i.id===id); await setItem(id,{status:it.status==="fav"?"new":"fav"}); } break;
     case "no": if(!live) return; await setItem(id,{status:"no"}); toast("Hidden. Future picks will steer away from it."); break;
@@ -587,7 +640,7 @@ document.addEventListener("submit", async ev => {
   if (kind==="settings"){
     const d = Object.fromEntries(new FormData(f).entries());
     LS.set("sage.key",String(d.key||"").trim()); LS.set("sage.model",d.model); LS.set("sage.search",d.search);
-    setupLocalSample(); toast(S.sample?"Settings saved. Claude is connected.":"Settings saved. Add a key to connect Claude."); render(); return;
+    setupLocalSample(); toast(S.sample?"Settings saved. Claude is connected.":"Settings saved. Add a key to connect Claude."); render(); if (S.sample){ S.autoFound=false; maybeAuto(); setTimeout(autoFind,300); } return;
   }
   if (kind==="sizes"){
     const d = Object.fromEntries(new FormData(f).entries());
@@ -667,7 +720,8 @@ function setupLocalSample(){
     content.push({type:"text",text:prompt+"\n\nYour final message must be only the JSON value requested."});
     const messages=[{role:"user",content}];
     const body = {model,max_tokens:8000,messages};
-    if (opts.search) body.tools=[{type:"web_search_20250305",name:"web_search",max_uses:8,user_location:{type:"approximate",country:"US"}}];
+    if (opts.search) body.tools=[{type:"web_search_20250305",name:"web_search",max_uses:opts.searchUses||8,user_location:{type:"approximate",country:"US"}}];
+    if (opts.search && opts.fetch) body.tools.push({type:"web_fetch_20250910",name:"web_fetch",max_uses:opts.fetch,max_content_tokens:12000});
     let finalText="";
     for (let round=0; round<4; round++){
       let r;
@@ -676,7 +730,7 @@ function setupLocalSample(){
       const j = await r.json().catch(()=>({}));
       if (!r.ok) throw {code: r.status===401?"bad_key":r.status===429?"rate_limited":r.status===529?"rate_limited":"upstream_error", message:j?.error?.message};
       const blocks = j.content||[];
-      const lastTool = blocks.map(b=>b.type).lastIndexOf("web_search_tool_result");
+      let lastTool=-1; blocks.forEach((b,i)=>{ if(/_tool_result$/.test(b.type)) lastTool=i; });
       finalText = blocks.slice(lastTool+1).filter(b=>b.type==="text").map(b=>b.text).join("") || blocks.filter(b=>b.type==="text").map(b=>b.text).join("");
       if (j.stop_reason==="pause_turn") { messages.push({role:"assistant",content:blocks}); continue; }
       break;
