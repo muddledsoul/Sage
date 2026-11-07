@@ -9,6 +9,9 @@ Versions follow [semver](https://semver.org): MAJOR.MINOR.PATCH. Every release i
 
 Open copies of the app check `version.json` when brought to the front and offer an **Update** button when a newer version is live.
 
+## 1.3.0 — 2026-11-07
+- Sizes are set as ranges: a from/to dropdown per category with real size steps (dresses 00–16, shoes 5–12 in halves, denim 23–34, letter sizes). One size or a span like 2–4 or 8.5–9.
+
 ## 1.2.0 — 2026-11-07
 - Version number, build date and mode shown at the bottom of the app.
 - Update check: the app offers to reload when a newer version is deployed.
