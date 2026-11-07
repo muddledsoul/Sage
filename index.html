@@ -220,7 +220,7 @@ main{padding-block:22px 64px}
 
 <script>
 (() => {
-const APP_VERSION = "1.3.0";
+const APP_VERSION = "1.4.0";
 const APP_BUILD = "2026-11-07";
 const CATS = ["Outerwear","Knitwear","Tops","Skirts","Dresses","Pants","Shoes","Bags","Accessories"];
 const TEXTURES = ["herringbone","plaid","tapestry","croc","knit","boucle","fur","suede","leather","satin","solid"];
@@ -303,7 +303,11 @@ function swatch(it){
     <span class="tag">${esc(it.category||"Piece")}</span>${fresh?'<span class="newdot">New</span>':""}</div>`;
 }
 function art(it){
-  if (it.image && !it.photoAsset) return `<div class="sw prod">${swatchInner(it)}<img src="${esc(it.image)}" alt="${esc(it.title)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"><span class="tag">${esc(it.category||"Piece")}</span></div>`;
+  if (!it.photoAsset && S.local) {
+    const c = imgChain(it);
+    if (c.length) return `<div class="sw prod">${swatchInner(it)}<img src="${esc(c[0])}" data-c="${esc(JSON.stringify(c))}" data-i="0" data-item="${esc(it.id)}" alt="${esc(it.title)}" loading="lazy" referrerpolicy="no-referrer"><span class="tag">${esc(it.category||"Piece")}</span></div>`;
+    if (it.url && !it.ogTried) queuePreview(it.id);
+  }
   if (it.photoAsset) return `<div class="sw" style="background:var(--line)"><img src="${esc(imgUrl(it.photoAsset))}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.remove()"><span class="tag">From your photo</span></div>`;
   return swatch(it);
 }
@@ -554,13 +558,15 @@ Brand: ${it.brand}
 Piece: ${it.title}
 Search phrase: ${it.query||""}
 ${it.tagText?`Tag: ${it.tagText}`:""}
-Search for it, then fetch the best-matching product page (the brand's own site or a major retailer such as Macy's, Nordstrom, Bloomingdale's, Revolve, Free People, Anthropologie). From the fetched page take the product's main photo URL (a direct https image URL from the retailer's image CDN, usually in an <img> or og:image), the current price, and the exact listed product name. If the exact piece is sold out or not found, use the closest in-stock match from the same brand and say so in "match".
-Reply with only a JSON object: {"url": product page URL or null, "image": direct product image URL or null, "price": current price like "$128" or null, "retailer": store name, "title": listed product name, "match": "exact" or "close" or "none"}`;
+Search for it, then fetch the best-matching product page (the brand's own site or a major retailer such as Macy's, Nordstrom, Bloomingdale's, Revolve, Free People, Anthropologie). From the fetched page copy the product's photo URLs exactly as they appear in the page content (direct https image links from the retailer's image CDN, e.g. og:image or the main gallery). Never construct or guess an image URL. Also take the current price and the exact listed product name. If the exact piece is sold out or not found, use the closest in-stock match from the same brand and say so in "match".
+Reply with only a JSON object: {"url": product page URL or null, "image": best product image URL copied from the page or null, "images": up to 3 more product image URLs copied from the page, "price": current price like "$128" or null, "retailer": store name, "title": listed product name, "match": "exact" or "close" or "none"}`;
   const r = await S.sample.json(q,{signal,search:true,searchUses:4,fetch:3});
   const patch = {lookedUp:Date.now()};
   if (r && /^https:\/\//.test(r.url||"")) {
     patch.url=String(r.url).slice(0,600);
     if (/^https:\/\//.test(r.image||"")) patch.image=String(r.image).slice(0,800);
+    patch.images=(Array.isArray(r.images)?r.images:[]).filter(u=>/^https:\/\//.test(u||"")).map(u=>String(u).slice(0,800)).slice(0,3);
+    patch.ogTried=null;
     if (r.price) patch.listedPrice=String(r.price).slice(0,20);
     if (r.retailer) patch.retailer=String(r.retailer).slice(0,40);
     if (r.match) patch.match=String(r.match).slice(0,10);
@@ -591,6 +597,43 @@ function autoFind(){
   const need = S.items.filter(i=>i.status!=="no" && !i.url && !i.lookedUp);
   need.sort((a,b)=>(a.source==="photo")-(b.source==="photo"));
   if (need.length) runFinder(need.slice(0,12).map(i=>i.id));
+}
+/* Product photo loading: direct → image relay → page preview image → swatch */
+const relay = u => "https://images.weserv.nl/?url="+enc(u)+"&w=700&we&output=jpg";
+function imgChain(it){
+  const raw = [it.image,...(Array.isArray(it.images)?it.images:[])].filter(u=>/^https:\/\//.test(u||""));
+  const out=[]; for (const u of [...new Set(raw)]) { out.push(u); if (!u.startsWith("https://images.weserv.nl")) out.push(relay(u)); }
+  return out;
+}
+document.addEventListener("error", ev => {
+  const im = ev.target;
+  if (!(im instanceof HTMLImageElement) || !im.dataset.c) return;
+  const c = JSON.parse(im.dataset.c); const i = Number(im.dataset.i)+1;
+  if (i < c.length) { im.dataset.i = i; im.src = c[i]; return; }
+  const id = im.dataset.item; im.remove();
+  const it = S.items.find(x=>x.id===id);
+  if (it && it.url && !it.ogTried) queuePreview(id);
+}, true);
+const PREVIEW = {queue:[],seen:new Set(),running:0};
+function queuePreview(id){
+  if (!S.local || PREVIEW.seen.has(id)) return;
+  PREVIEW.seen.add(id); PREVIEW.queue.push(id); setTimeout(pumpPreview,0);
+}
+async function pumpPreview(){
+  while (PREVIEW.running < 2 && PREVIEW.queue.length){
+    const id = PREVIEW.queue.shift(); const it = S.items.find(x=>x.id===id); if (!it?.url) continue;
+    PREVIEW.running++;
+    (async () => {
+      const patch = {ogTried:Date.now()};
+      try {
+        const r = await fetch("https://api.microlink.io/?url="+enc(it.url));
+        const j = await r.json();
+        const img = j?.data?.image?.url;
+        if (j?.status==="success" && /^https:\/\//.test(img||"") && img!==it.image) { patch.image = img; patch.images = [...new Set([...(it.images||[]),...(it.image?[it.image]:[])])].slice(0,4); }
+      } catch {}
+      try { await S.db.doc("items/"+id).update(patch); } catch {}
+    })().finally(()=>{ PREVIEW.running--; pumpPreview(); });
+  }
 }
 async function ensureHandPicked(){
   if (S.lists.some(l=>l.id==="hand-picked")) return;
@@ -651,7 +694,7 @@ document.addEventListener("click", async ev => {
     case "refine": refineStyle(); break;
     case "stop": S.ctl?.abort(); break;
     case "reload": location.replace(location.pathname+"?v="+encodeURIComponent(S.newer||Date.now())); break;
-    case "find": ev.preventDefault(); if(id) runFinder([id]); break;
+    case "find": ev.preventDefault(); if(id){ PREVIEW.seen.delete(id); runFinder([id]); } break;
     case "exportdata": { const txt = LS.get("sage.db")||"{}"; try{ await navigator.clipboard.writeText(txt); toast("Backup copied. Paste it into a note to keep it."); }catch{ toast("Couldn't copy. Your browser blocked the clipboard."); } } break;
     case "fav": if(!live) return toast("Open in Claude to save pieces."); { const it=S.items.find(i=>i.id===id); await setItem(id,{status:it.status==="fav"?"new":"fav"}); } break;
     case "no": if(!live) return; await setItem(id,{status:"no"}); toast("Hidden. Future picks will steer away from it."); break;
